@@ -1,41 +1,40 @@
 import 'package:flutter/material.dart';
-// import 'package:app_push/services/push_notifications_service.dart';
+import 'package:app_push/services/push_notifications_service.dart';
 
 import 'package:app_push/screens/home_screen.dart';
 import 'package:app_push/screens/message_screen.dart';
  
 void main() async {
-
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await PushNotificationService.initializeApp();
-
-  runApp(MyApp());
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await PushNotificationService.initializeApp();
+  runApp(const MyApp());
 }
  
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
 
-  // final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
-  // final GlobalKey<ScaffoldMessengerState> messengerKey = new GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<NavigatorState> navigatorKey =  GlobalKey<NavigatorState>();
+  final GlobalKey<ScaffoldMessengerState> messengerKey =  GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() { 
     super.initState();
     
     // Context!
-    // PushNotificationService.messagesStream.listen((message) { 
+    PushNotificationService.messagesStream.listen((message) { 
 
       // print('MyApp: $message');
-      // navigatorKey.currentState?.pushNamed('message', arguments: message);
+      navigatorKey.currentState?.pushNamed('message', arguments: message);
       
-      // final snackBar = SnackBar(content: Text(message));
-      // messengerKey.currentState?.showSnackBar(snackBar);
-    // });
+      final snackBar = SnackBar(content: Text(message));
+      messengerKey.currentState?.showSnackBar(snackBar);
+    }); 
   }
 
 
@@ -45,8 +44,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Material App',
       initialRoute: 'home',
-      // navigatorKey: navigatorKey, // Navegar
-      // scaffoldMessengerKey: messengerKey, // Snacks
+      navigatorKey: navigatorKey, // Navegar
+      scaffoldMessengerKey: messengerKey, // Snacks
       routes: {
         'home'   : ( _ ) => HomeScreen(),
         'message': ( _ ) => MessageScreen(),
